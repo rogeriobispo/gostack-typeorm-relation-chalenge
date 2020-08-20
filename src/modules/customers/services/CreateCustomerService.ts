@@ -15,7 +15,10 @@ class CreateCustomerService {
   constructor(private customersRepository: ICustomersRepository) {}
 
   public async execute({ name, email }: IRequest): Promise<Customer> {
-    // TODO
+    const customer = await this.customersRepository.findByEmail(email);
+    if (customer) throw new AppError('Email has been taken');
+
+    return this.customersRepository.create({ name, email });
   }
 }
 
