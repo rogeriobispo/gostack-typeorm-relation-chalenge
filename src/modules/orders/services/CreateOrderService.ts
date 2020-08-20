@@ -44,7 +44,7 @@ class CreateOrderService {
       throw new AppError('All Products must exists ');
 
     const productsWithQuantity = productsAvailable.filter(productAvailable => {
-      return productsAvailable.filter(productOrder => {
+      return products.filter(productOrder => {
         return (
           productOrder.id === productAvailable.id &&
           productOrder.quantity <= productAvailable.quantity
@@ -53,7 +53,7 @@ class CreateOrderService {
     });
 
     if (productsWithQuantity.length < products.length)
-      throw new AppError('Existe items without quantity needed');
+      throw new AppError('Exists items without quantity needed');
 
     const productsTocreateOrder = products.map(product => {
       return {
@@ -64,7 +64,7 @@ class CreateOrderService {
         )[0].price,
       };
     });
-    const order = this.ordersRepository.create({
+    const order = await this.ordersRepository.create({
       customer,
       products: productsTocreateOrder,
     });
@@ -74,7 +74,7 @@ class CreateOrderService {
         id: product.id,
         quantity:
           productsWithQuantity.filter(
-            productAvailable => productAvailable.id == product.id,
+            productAvailable => productAvailable.id === product.id,
           )[0].quantity - product.quantity,
       };
     });

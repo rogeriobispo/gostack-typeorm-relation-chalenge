@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
-import Customer from '../infra/typeorm/entities/Customer';
+import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 import ICustomersRepository from '../repositories/ICustomersRepository';
 
 interface IRequest {
@@ -12,7 +12,10 @@ interface IRequest {
 
 @injectable()
 class CreateCustomerService {
-  constructor(private customersRepository: ICustomersRepository) {}
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: ICustomersRepository,
+  ) {}
 
   public async execute({ name, email }: IRequest): Promise<Customer> {
     const customer = await this.customersRepository.findByEmail(email);

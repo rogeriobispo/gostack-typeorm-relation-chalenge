@@ -1,4 +1,4 @@
-import Customer from '../infra/typeorm/entities/Customer';
+import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 
 import ICreateCustomerDTO from '../dtos/ICreateCustomerDTO';
 
